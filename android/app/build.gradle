@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "com.example.yourapp" // Update with your app's package name
+        minSdkVersion 21 // Minimum supported Android version
+        targetSdkVersion 33 // Target SDK version
+        versionCode 1 // App version code
+        versionName "1.0" // App version name
+
+        multiDexEnabled true // Enable multidex if needed
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'my-alias' // The alias you used
+            keyPassword 'your-key-password' // The key password you entered during keystore creation
+            storeFile file('path/to/my-keystore.keystore') // Path to your keystore file
+            storePassword 'your-keystore-password' // The password for the keystore
+        }
+    }
+
+    buildTypes {
+        release {
+            // Enable ProGuard for code obfuscation and shrinking
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // Use signing config for release builds
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.multidex:multidex:2.0.1' // For multidex support
+}
