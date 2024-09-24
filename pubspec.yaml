@@ -10,9 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.0.0  # Check for the latest version on pub.dev
 
   # Add other dependencies here if needed
   # Example: provider: ^6.1.3
+
 
 dev_dependencies:
   flutter_test:
@@ -28,7 +30,7 @@ flutter:
     - assets/images/chicken-biryani.jpg
     - assets/images/chick.jpg
     - assets/images/Mutton.jpg
-    - assets/images/paneer.jpg
+    - assets/images/Egg.jpg
     - assets/images/paneer.jpg
     - assets/images/user.webp
 # Uncomment this section if you have a `flutter_launcher_icons` configuration

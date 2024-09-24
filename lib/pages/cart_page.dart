@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'cart_provider.dart'; 
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,26 +9,29 @@ class CartPage extends StatelessWidget {
         title: Text('My Cart'),
         backgroundColor: Colors.deepOrange,
       ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          _cartItem('Chicken Biriyani', '₹250', 'assets/images/chick.jpg'),
-          _cartItem('Mutton Biriyani', '₹350', 'assets/images/Mutton.jpg'),
-          _cartItem('Paneer Biriyani', '₹200', 'assets/images/paneer.jpg'),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/payment');
+      body: Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+          return ListView.builder(
+            padding: EdgeInsets.all(16.0),
+            itemCount: cartProvider.cartItems.length,
+            itemBuilder: (context, index) {
+              final item = cartProvider.cartItems[index];
+              return _cartItem(item.name, item.price, item.imageUrl);
             },
-            child: Text('Proceed to Payment'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepOrange,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
+          );
+        },
+      ),
+      bottomNavigationBar: ElevatedButton(
+        onPressed: () {
+          _showProceedToPaymentPopup(context); 
+        },
+        child: Text('Proceed to Payment'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.deepOrange,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -53,7 +57,7 @@ class CartPage extends StatelessWidget {
         ),
         subtitle: Text(
           price,
-          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+          style: TextStyle(fontSize: 16, color: Colors.grey[700]),
         ),
         trailing: IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
@@ -63,5 +67,31 @@ class CartPage extends StatelessWidget {
       ),
     );
   }
-}
 
+  void _showProceedToPaymentPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Proceed to Payment"),
+          content: Text("Are you sure you want to proceed to the payment page?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();  
+                Navigator.pushNamed(context, '/payment');  
+              },
+              child: Text("Proceed"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'cart_provider.dart'; 
 
 class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final totalPrice = Provider.of<CartProvider>(context).getTotalPrice();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),
@@ -14,7 +18,7 @@ class PaymentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Total Amount: ₹600',
+              'Total Amount: ₹${totalPrice.toStringAsFixed(2)}',  
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
